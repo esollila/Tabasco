@@ -1,0 +1,282 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Normalized MSE plot comparing the shrinkage estimators</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-08-22"><meta name="DC.source" content="tabasco_demo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Normalized MSE plot comparing the shrinkage estimators</h1><!--introduction--><p>We compute the TABASCO estimator and the Ledoit-Wolf estimator (LWE)by Ledoit and Wolf (2004) in the setting, where the data is generated from a multivariate normal distribution (MVN) with an AR(1) covariance matrix. The correlation parameter is this example is <img src="tabasco_demo_eq10205190956469110646.png" alt="$\rho = 0.2$" style="width:34px;height:10px;">. This example will reproduce the Figure~3 (upper left corner plot) for <b>Tabasco</b> and <b>LWE</b> estimators.</p><p>To compute the LWE you need to istall the <b>RegularizedSCM</b> toolbox from:       <a href="http://users.spa.aalto.fi/esollila/regscm/">http://users.spa.aalto.fi/esollila/regscm/</a> or use thise direct link:     <a href="http://users.spa.aalto.fi/esollila/regscm/RegularizedSCM.mltbx">http://users.spa.aalto.fi/esollila/regscm/RegularizedSCM.mltbx</a></p><p><b>REFERECE</b></p><p>[1] E. Ollila and Arnaud Breloy, "Regularized Tapered or Banded Sample       Covariance Matrix", ArXiv preprint, submitted for publication,       Sept. 2021.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Initalize tabasco parameters:</a></li><li><a href="#2">Model parameters</a></li><li><a href="#3">Start the simulation</a></li><li><a href="#5">PLOT 1: NMSE as a function of n</a></li><li><a href="#6">PLOT 2: beta values as a function of n</a></li></ul></div><h2 id="1">Initalize tabasco parameters:</h2><pre class="codeinput">clearvars;  clc;
+p = 100
+vec_k = [1:30 p-29:p]; <span class="comment">% bandwidth</span>
+Wtype = <span class="string">'band'</span>
+method = <span class="string">'ell1'</span>
+mu_known = false
+</pre><pre class="codeoutput">
+p =
+
+   100
+
+
+Wtype =
+
+    'band'
+
+
+method =
+
+    'ell1'
+
+
+mu_known =
+
+  logical
+
+   0
+
+</pre><h2 id="2">Model parameters</h2><pre class="codeinput"><span class="comment">% mean vector:</span>
+mu = 10*randn(p,1);
+
+<span class="comment">% AR(1) covariance matrix:</span>
+rho = 0.2;
+tmp = abs(repmat(1:p,p,1) - repmat(1:p,p,1)');
+M = rho.^tmp; <span class="comment">%  covariance matrix</span>
+Msqrt   = sqrtm(M);
+normMsq = trace(M^2);
+</pre><h2 id="3">Start the simulation</h2><pre class="codeinput">NRsamples = 1000;  <span class="comment">% number of MC trials (NOTE! In our paper we used 5000)</span>
+nlist = 10:15:115; <span class="comment">% sample sizes</span>
+betav = zeros(length(nlist),2); <span class="comment">% betas for LWE and Tabasco</span>
+NMSE = zeros(length(nlist),2);  <span class="comment">% NMSE-s for each n</span>
+</pre><pre class="codeinput">tic;
+<span class="keyword">parfor</span> ii = 1:length(nlist)
+
+    n = nlist(ii);
+    NMSE0 = 0;
+    NMSE1 = 0; NMSE2 = 0; NMSE3 = 0; NMSE4 = 0; NMSE5 = 0; <span class="comment">%NMSE6 = 0; NMSE7 = 0;</span>
+    beta1 = 0; beta2 = 0; beta3 = 0; <span class="comment">%beta4 = 0; %beta5 = 0; beta6 = 0; beta7 = 0;</span>
+    rng(<span class="string">'default'</span>); <span class="comment">% set random seed</span>
+
+    <span class="keyword">for</span> jj=1:NRsamples
+
+        <span class="comment">% data generation</span>
+        X0 = randn(n,p);
+        X  = X0*Msqrt + repmat(mu.',n,1);
+
+        <span class="comment">% LWE</span>
+        [EST1,~,stat1] = regscm(X,<span class="string">'approach'</span>,<span class="string">'lw'</span>,<span class="string">'verbose'</span>,<span class="string">'off'</span>);
+        NMSE1 = NMSE1 + norm(EST1 - M,<span class="string">'fro'</span>)^2/normMsq;
+        beta1 = beta1 + stat1.beta;
+
+        <span class="comment">% Tabasco</span>
+        [S_tabasco, be_bst, kbest] = tabasco(X,vec_k,method,Wtype,[],mu_known);
+        NMSE2 = NMSE2 + norm(S_tabasco - M,<span class="string">'fro'</span>)^2/normMsq;
+        beta2 = beta2 + be_bst;
+
+    <span class="keyword">end</span>
+    betav(ii,:) = [beta1 beta2]/NRsamples;
+    NMSE(ii,:) = [NMSE1 NMSE2]/NRsamples;
+
+
+<span class="keyword">end</span>
+toc;
+</pre><pre class="codeoutput">Elapsed time is 10.166053 seconds.
+</pre><h2 id="5">PLOT 1: NMSE as a function of n</h2><pre class="codeinput">set(0, <span class="string">'DefaultLineLineWidth'</span>, 2);
+figure(1); clf
+hold <span class="string">on</span>;
+plot(nlist,NMSE(:,1),<span class="string">'rv-'</span>,<span class="string">'MarkerSize'</span>,12,<span class="string">'DisplayName'</span>,<span class="string">'LWE'</span>)
+plot(nlist,NMSE(:,2),<span class="string">'bo-'</span>,<span class="string">'MarkerSize'</span>,12,<span class="string">'DisplayName'</span>,<span class="string">'Tabasco'</span>)
+grid <span class="string">on</span>;
+box <span class="string">on</span>;
+axis <span class="string">tight</span>;
+set(gca,<span class="string">'FontSize'</span>,20,<span class="string">'LineWidth'</span>,1.5,<span class="string">'FontName'</span>,<span class="string">'Helvetica'</span>);
+xlabel(<span class="string">'$n$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>,<span class="string">'FontSize'</span>,24)
+ylabel(<span class="string">'NMSE'</span>,<span class="string">'FontSize'</span>,24);
+legend(<span class="string">'Orientation'</span>,<span class="string">'vertical'</span>,<span class="string">'FontSize'</span>,22,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>);
+legend <span class="string">boxoff</span>;
+</pre><img vspace="5" hspace="5" src="tabasco_demo_01.png" alt=""> <h2 id="6">PLOT 2: beta values as a function of n</h2><pre class="codeinput">figure(2); clf;
+hold <span class="string">on</span>;
+plot(nlist,betav(:,1),<span class="string">'rv-.'</span>,<span class="string">'MarkerSize'</span>,12,<span class="string">'DisplayName'</span>,<span class="string">'LWE'</span>)
+plot(nlist,betav(:,2),<span class="string">'bo-.'</span>,<span class="string">'MarkerSize'</span>,12,<span class="string">'DisplayName'</span>,<span class="string">'Tabasco'</span>)
+set(gca,<span class="string">'FontSize'</span>,20,<span class="string">'LineWidth'</span>,1.5,<span class="string">'FontName'</span>,<span class="string">'Helvetica'</span>);
+xlabel(<span class="string">'$n$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>,<span class="string">'FontSize'</span>,24)
+ylabel(<span class="string">'\beta'</span>,<span class="string">'FontSize'</span>,24)
+grid <span class="string">on</span>; box <span class="string">on</span>; xlim([nlist(1) nlist(end)]);
+legend(<span class="string">'Orientation'</span>,<span class="string">'vertical'</span>,<span class="string">'Location'</span>,<span class="string">'best'</span>,<span class="string">'FontSize'</span>,17,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>);
+ylim([-0.001 1.001])
+</pre><img vspace="5" hspace="5" src="tabasco_demo_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Normalized MSE plot comparing the shrinkage estimators
+%  
+% We compute the TABASCO estimator and the Ledoit-Wolf estimator (LWE)by 
+% Ledoit and Wolf (2004) in the setting, where the data is generated from 
+% a multivariate normal distribution (MVN) with an AR(1) covariance matrix.  
+% The correlation parameter is this example is $\rho = 0.2$. This example 
+% will reproduce the Figure~3 (upper left corner plot) for *Tabasco* and 
+% *LWE* estimators. 
+% 
+% To compute the LWE you need to istall the 
+% *RegularizedSCM* toolbox from: 
+%       http://users.spa.aalto.fi/esollila/regscm/
+% or use thise direct link:
+%     http://users.spa.aalto.fi/esollila/regscm/RegularizedSCM.mltbx
+%
+% *REFERECE*
+%
+% [1] E. Ollila and Arnaud Breloy, "Regularized Tapered or Banded Sample 
+%       Covariance Matrix", ArXiv preprint, submitted for publication, 
+%       Sept. 2021.
+
+
+%% Initalize tabasco parameters: 
+clearvars;  clc;
+p = 100
+vec_k = [1:30 p-29:p]; % bandwidth 
+Wtype = 'band'
+method = 'ell1'
+mu_known = false
+
+%% Model parameters
+
+% mean vector:
+mu = 10*randn(p,1);
+
+% AR(1) covariance matrix:
+rho = 0.2; 
+tmp = abs(repmat(1:p,p,1) - repmat(1:p,p,1)');
+M = rho.^tmp; %  covariance matrix          
+Msqrt   = sqrtm(M);
+normMsq = trace(M^2);
+
+%% Start the simulation
+
+NRsamples = 1000;  % number of MC trials (NOTE! In our paper we used 5000)
+nlist = 10:15:115; % sample sizes
+betav = zeros(length(nlist),2); % betas for LWE and Tabasco
+NMSE = zeros(length(nlist),2);  % NMSE-s for each n
+        
+%%
+tic;
+parfor ii = 1:length(nlist)
+
+    n = nlist(ii);
+    NMSE0 = 0;
+    NMSE1 = 0; NMSE2 = 0; NMSE3 = 0; NMSE4 = 0; NMSE5 = 0; %NMSE6 = 0; NMSE7 = 0;
+    beta1 = 0; beta2 = 0; beta3 = 0; %beta4 = 0; %beta5 = 0; beta6 = 0; beta7 = 0;
+    rng('default'); % set random seed 
+ 
+    for jj=1:NRsamples
+
+        % data generation
+        X0 = randn(n,p);
+        X  = X0*Msqrt + repmat(mu.',n,1);    
+
+        % LWE
+        [EST1,~,stat1] = regscm(X,'approach','lw','verbose','off');
+        NMSE1 = NMSE1 + norm(EST1 - M,'fro')^2/normMsq;    
+        beta1 = beta1 + stat1.beta;
+
+        % Tabasco
+        [S_tabasco, be_bst, kbest] = tabasco(X,vec_k,method,Wtype,[],mu_known);
+        NMSE2 = NMSE2 + norm(S_tabasco - M,'fro')^2/normMsq;
+        beta2 = beta2 + be_bst;
+        
+    end
+    betav(ii,:) = [beta1 beta2]/NRsamples;
+    NMSE(ii,:) = [NMSE1 NMSE2]/NRsamples;
+ 
+        
+end
+toc;
+
+%% PLOT 1: NMSE as a function of n
+% 
+set(0, 'DefaultLineLineWidth', 2);
+figure(1); clf
+hold on;
+plot(nlist,NMSE(:,1),'rv-','MarkerSize',12,'DisplayName','LWE')
+plot(nlist,NMSE(:,2),'bo-','MarkerSize',12,'DisplayName','Tabasco')
+grid on;
+box on;
+axis tight;
+set(gca,'FontSize',20,'LineWidth',1.5,'FontName','Helvetica');
+xlabel('$n$','Interpreter','Latex','FontSize',24)
+ylabel('NMSE','FontSize',24); 
+legend('Orientation','vertical','FontSize',22,'Interpreter','Latex');
+legend boxoff;
+
+%% PLOT 2: beta values as a function of n
+
+figure(2); clf; 
+hold on; 
+plot(nlist,betav(:,1),'rv-.','MarkerSize',12,'DisplayName','LWE')
+plot(nlist,betav(:,2),'bo-.','MarkerSize',12,'DisplayName','Tabasco')
+set(gca,'FontSize',20,'LineWidth',1.5,'FontName','Helvetica');
+xlabel('$n$','Interpreter','Latex','FontSize',24)
+ylabel('\beta','FontSize',24)
+grid on; box on; xlim([nlist(1) nlist(end)]);
+legend('Orientation','vertical','Location','best','FontSize',17,'Interpreter','Latex');
+ylim([-0.001 1.001])
+
+##### SOURCE END #####
+--></body></html>
